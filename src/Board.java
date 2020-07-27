@@ -1,4 +1,5 @@
 public class Board {
+    //
    protected int x, y;
    protected Cell[][] currentConfiguration;
 
@@ -10,10 +11,8 @@ public class Board {
         //filling the board, starting from the first row
         for (int line = 0; line < lines.length; line++) {
             for (int i = 0; i < lines[line].length(); i++) {
-                //System.out.print((int)lines[line].charAt(i));
                 int colour = Character.getNumericValue(lines[line].charAt(i));
                 this.currentConfiguration[line][i] = new Cell(colour);
-                //System.out.print(board[line][i].colour);
             }
         }
     }
@@ -64,30 +63,28 @@ public class Board {
         }
     }
 
-   /*l public void updateBoard(){
-        for (int line = 0; line < y; line++) {
-            for (int column = 0; column < x; column++) {
-                this.currentConfiguration[line][column].updateColour();
-            }
-        }
-    }*/
+
      public void updateBoard() {
+        /* The assumption here is that all the cells change colour simultaneously, based entirely on the
+         current generation and not consecutively
+         */
+        //create new 2D array for the new state of the game
          Cell[][] newConfig = new Cell[y][x];
+         //fill the new array with the new values
          for (int line = 0; line < y; line++) {
              for (int column = 0; column < x; column++) {
                  newConfig[line][column] = new Cell(this.currentConfiguration[line][column].updateColour());
              }
          }
+         //exchange the current generation for the next generation
          this.currentConfiguration = newConfig;
          this.linkNeighbours();
          /*Alternatively, instead of creating a new array for each generation, one can use a 2D int
          array as a class variable in Board to store the new colour values generated from updateColour
          during the execution of updateBoard. That would mean going through all the cells once to
          generate the colour values and then again to assign the values from that int array as
-         colour of the cells
-
-
-         */
+         colour of the cells. We save space at the cost of time.
+                  */
      }
 
 
